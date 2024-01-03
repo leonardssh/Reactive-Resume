@@ -119,6 +119,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@fontsource/ibm-plex-sans": "^5.0.17",
     "@hookform/resolvers": "^3.3.2",
+    "@img/sharp-win32-x64": "^0.33.1",
     "@lingui/cli": "^4.6.0",
     "@lingui/core": "^4.6.0",
     "@lingui/detect-locale": "^4.6.0",

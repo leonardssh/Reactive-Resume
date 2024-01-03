@@ -30,7 +30,7 @@ const Header = () => {
   const fontSize = useArtboardStore((state) => state.resume.metadata.typography.font.size);
 
   return (
-    <div className="flex items-center justify-between space-x-4 border-b border-primary pb-5">
+    <div className="flex items-center justify-between space-x-4">
       <Picture />
 
       <div className="flex-1 space-y-2">
@@ -39,29 +39,32 @@ const Header = () => {
           <div className="text-base">{basics.headline}</div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-sm">
+        <div className="flex flex-wrap flex-col justify-center items-start gap-x-2 gap-y-0.5 text-sm">
           {basics.location && (
             <div className="flex items-center gap-x-1.5">
               <i className="ph ph-bold ph-map-pin text-primary" />
               <div>{basics.location}</div>
             </div>
           )}
-          {basics.phone && (
-            <div className="flex items-center gap-x-1.5">
-              <i className="ph ph-bold ph-phone text-primary" />
-              <a href={`tel:${basics.phone}`} target="_blank" rel="noreferrer">
-                {basics.phone}
-              </a>
-            </div>
-          )}
-          {basics.email && (
-            <div className="flex items-center gap-x-1.5">
+          <div className="flex flex-row gap-x-2">
+           {basics.email && (
+            <div className="flex items-center gap-x-1.5 font-bold">
               <i className="ph ph-bold ph-at text-primary" />
               <a href={`mailto:${basics.email}`} target="_blank" rel="noreferrer">
                 {basics.email}
               </a>
             </div>
           )}
+          {basics.phone && (
+            <div className="flex items-center gap-x-1.5 font-bold">
+              <i className="ph ph-bold ph-phone text-primary" />
+              <a href={`tel:${basics.phone}`} target="_blank" rel="noreferrer">
+                {basics.phone}
+              </a>
+            </div>
+          )}
+            </div>
+         
           <Link url={basics.url} />
           {basics.customFields.map((item) => (
             <div key={item.id} className="flex items-center gap-x-1.5">
@@ -74,7 +77,7 @@ const Header = () => {
 
       {profiles.visible && profiles.items.length > 0 && (
         <div
-          className="grid gap-x-4 gap-y-1 text-right"
+          className="grid gap-x-4 gap-y-2 text-right"
           style={{ gridTemplateColumns: `repeat(${profiles.columns}, auto)` }}
         >
           {profiles.items
@@ -109,7 +112,7 @@ const Summary = () => {
   if (!section.visible || isEmptyString(section.content)) return null;
 
   return (
-    <section id={section.id}>
+    <section id={section.id} className="border-b border-black/10 pb-2">
       <h4 className="font-bold text-primary">{section.name}</h4>
 
       <div
@@ -145,7 +148,7 @@ const Link = ({ url, icon, label, className }: LinkProps) => {
   if (!isUrl(url.href)) return null;
 
   return (
-    <div className="flex items-center gap-x-1.5">
+    <div className="flex items-center gap-x-1.5 font-bold">
       {icon ?? <i className="ph ph-bold ph-link text-primary" />}
       <a
         href={url.href}
@@ -181,8 +184,8 @@ const Section = <T,>({
   if (!section.visible || !section.items.length) return null;
 
   return (
-    <section id={section.id} className="grid">
-      <h4 className="font-bold text-primary">{section.name}</h4>
+    <section id={section.id} className="grid pb-1.5">
+      <h4 className="font-extrabold text-primary text-sm uppercase mb-2 border-b border-primary w-fit">{section.name}</h4>
 
       <div
         className="grid gap-x-6 gap-y-3"
@@ -200,7 +203,6 @@ const Section = <T,>({
               <div key={item.id} className={cn("space-y-2", className)}>
                 <div>
                   {children?.(item as T)}
-                  {url !== undefined && <Link url={url} />}
                 </div>
 
                 {summary !== undefined && !isEmptyString(summary) && (
@@ -212,6 +214,7 @@ const Section = <T,>({
                 {keywords !== undefined && keywords.length > 0 && (
                   <p className="text-sm">{keywords.join(", ")}</p>
                 )}
+                {url !== undefined && <Link url={url} />}
               </div>
             );
           })}
@@ -233,8 +236,8 @@ const Experience = () => {
           </div>
 
           <div className="shrink-0 text-right">
-            <div className="font-bold">{item.date}</div>
-            <div>{item.location}</div>
+            <div className="font-medium -tracking-wide text-black text-sm">{item.location}</div>
+            <div className="font-medium -tracking-wide text-black/50 text-sm">({item.date})</div>
           </div>
         </div>
       )}
@@ -251,13 +254,15 @@ const Education = () => {
         <div className="flex items-center justify-between">
           <div className="text-left">
             <div className="font-bold">{item.institution}</div>
+            <div>{item.studyType}</div>
             <div>{item.area}</div>
             <div>{item.score}</div>
           </div>
 
           <div className="shrink-0 text-right">
-            <div className="font-bold">{item.date}</div>
-            <div>{item.studyType}</div>
+          <div className="font-medium -tracking-wide text-black text-sm">Slatina, Olt, Romania</div>
+          <div className="font-medium -tracking-wide text-black/50 text-sm">({item.date})</div>
+            
           </div>
         </div>
       )}
@@ -366,7 +371,7 @@ const Volunteer = () => {
           </div>
 
           <div className="shrink-0 text-right">
-            <div className="font-bold">{item.date}</div>
+          <div className="font-medium -tracking-wide text-black/50 text-sm">({item.date})</div>
             <div>{item.location}</div>
           </div>
         </div>
@@ -403,7 +408,7 @@ const Projects = () => {
           </div>
 
           <div className="shrink-0 text-right">
-            <div className="font-bold">{item.date}</div>
+          <div className="font-medium -tracking-wide text-black/50 text-sm">({item.date})</div>
           </div>
         </div>
       )}
