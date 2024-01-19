@@ -47,24 +47,24 @@ const Header = () => {
             </div>
           )}
           <div className="flex flex-row gap-x-2">
-           {basics.email && (
-            <div className="flex items-center gap-x-1.5 font-bold">
-              <i className="ph ph-bold ph-at text-primary" />
-              <a href={`mailto:${basics.email}`} target="_blank" rel="noreferrer">
-                {basics.email}
-              </a>
-            </div>
-          )}
-          {basics.phone && (
-            <div className="flex items-center gap-x-1.5 font-bold">
-              <i className="ph ph-bold ph-phone text-primary" />
-              <a href={`tel:${basics.phone}`} target="_blank" rel="noreferrer">
-                {basics.phone}
-              </a>
-            </div>
-          )}
-            </div>
-         
+            {basics.email && (
+              <div className="flex items-center gap-x-1.5 font-bold">
+                <i className="ph ph-bold ph-at text-primary" />
+                <a href={`mailto:${basics.email}`} target="_blank" rel="noreferrer">
+                  {basics.email}
+                </a>
+              </div>
+            )}
+            {basics.phone && (
+              <div className="flex items-center gap-x-1.5 font-bold">
+                <i className="ph ph-bold ph-phone text-primary" />
+                <a href={`tel:${basics.phone}`} target="_blank" rel="noreferrer">
+                  {basics.phone}
+                </a>
+              </div>
+            )}
+          </div>
+
           <Link url={basics.url} />
           {basics.customFields.map((item) => (
             <div key={item.id} className="flex items-center gap-x-1.5">
@@ -185,7 +185,9 @@ const Section = <T,>({
 
   return (
     <section id={section.id} className="grid pb-1.5">
-      <h4 className="font-extrabold text-primary text-sm uppercase mb-2 border-b border-primary w-fit">{section.name}</h4>
+      <h4 className="font-extrabold text-primary text-sm uppercase mb-2 border-b border-primary w-fit">
+        {section.name}
+      </h4>
 
       <div
         className="grid gap-x-6 gap-y-3"
@@ -201,9 +203,7 @@ const Section = <T,>({
 
             return (
               <div key={item.id} className={cn("space-y-2", className)}>
-                <div>
-                  {children?.(item as T)}
-                </div>
+                <div>{children?.(item as T)}</div>
 
                 {summary !== undefined && !isEmptyString(summary) && (
                   <div className="wysiwyg" dangerouslySetInnerHTML={{ __html: summary }} />
@@ -260,9 +260,10 @@ const Education = () => {
           </div>
 
           <div className="shrink-0 text-right">
-          <div className="font-medium -tracking-wide text-black text-sm">Slatina, Olt, Romania</div>
-          <div className="font-medium -tracking-wide text-black/50 text-sm">({item.date})</div>
-            
+            <div className="font-medium -tracking-wide text-black text-sm">
+              Slatina, Olt, Romania
+            </div>
+            <div className="font-medium -tracking-wide text-black/50 text-sm">({item.date})</div>
           </div>
         </div>
       )}
@@ -371,7 +372,7 @@ const Volunteer = () => {
           </div>
 
           <div className="shrink-0 text-right">
-          <div className="font-medium -tracking-wide text-black/50 text-sm">({item.date})</div>
+            <div className="font-medium -tracking-wide text-black/50 text-sm">({item.date})</div>
             <div>{item.location}</div>
           </div>
         </div>
@@ -408,7 +409,7 @@ const Projects = () => {
           </div>
 
           <div className="shrink-0 text-right">
-          <div className="font-medium -tracking-wide text-black/50 text-sm">({item.date})</div>
+            <div className="font-medium -tracking-wide text-black/50 text-sm">({item.date})</div>
           </div>
         </div>
       )}
@@ -478,8 +479,8 @@ const mapSectionToComponent = (section: SectionKey) => {
       return <Publications />;
     case "volunteer":
       return <Volunteer />;
-    case "languages":
-      return <Languages />;
+    // case "languages":
+    //   return <Languages />;
     case "projects":
       return <Projects />;
     case "references":
@@ -498,9 +499,16 @@ export const Onyx = ({ columns, isFirstPage = false }: TemplateProps) => {
     <div className="p-custom space-y-4">
       {isFirstPage && <Header />}
 
-      {main.map((section) => (
-        <Fragment key={section}>{mapSectionToComponent(section)}</Fragment>
-      ))}
+      {main.map((section) =>
+        section === "skills" ? (
+          <div className="flex flex-row justify-between">
+            <Fragment key={section}>{mapSectionToComponent(section)}</Fragment>
+            <Languages />
+          </div>
+        ) : (
+          <Fragment key={section}>{mapSectionToComponent(section)}</Fragment>
+        ),
+      )}
 
       {sidebar.map((section) => (
         <Fragment key={section}>{mapSectionToComponent(section)}</Fragment>
